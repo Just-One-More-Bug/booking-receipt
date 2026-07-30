@@ -9,134 +9,173 @@ class ReceiptSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 276,
       height: 530,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(3),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x2B000000),
-            blurRadius: 18,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Column(
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          const SizedBox(height: 28),
-          const _AvatarEmoji(),
-          const SizedBox(height: 0),
-          Text(
-            'Thank you ${receipt.recipientName}',
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF222222),
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            receipt.subtitle,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12.5,
-              height: 1.05,
-              color: Color(0xFFAAAAAA),
-            ),
-          ),
-          const SizedBox(height: 15),
-          _DividerLine(),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _LabelColumn(labels: [receipt.dateLabel, receipt.orderLabel]),
-                const SizedBox(width: 36),
-                _ValueColumn(values: [receipt.dateValue, receipt.orderValue]),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            height: 12,
-            color: const Color(0xFFF7F7F7),
-            alignment: Alignment.center,
-            child: const Text(
-              'Order Summary',
-              style: TextStyle(
-                fontSize: 8,
-                color: Color(0xFF000000),
+          Positioned(
+            left: 6,
+            right: 6,
+            top: 10,
+            bottom: -2,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x44000000),
+                    blurRadius: 26,
+                    spreadRadius: 2,
+                    offset: Offset(0, 14),
+                  ),
+                  BoxShadow(
+                    color: Color(0x22000000),
+                    blurRadius: 18,
+                    spreadRadius: 1,
+                    offset: Offset(12, 6),
+                  ),
+                  BoxShadow(
+                    color: Color(0x22000000),
+                    blurRadius: 18,
+                    spreadRadius: 1,
+                    offset: Offset(-12, 6),
+                  ),
+                ],
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 18),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(
+                color: const Color(0xFFBEBEBE),
+                width: 0.6,
+              ),
+            ),
+            child: Column(
               children: [
-                const _ProductThumb(),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
+                const SizedBox(height: 28),
+                const _AvatarEmoji(),
+                const SizedBox(height: 0),
+                Text(
+                  'Thank you ${receipt.recipientName}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF222222),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  receipt.subtitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    height: 1.05,
+                    color: Color(0xFFAAAAAA),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                _DividerLine(),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        receipt.productName,
-                        style: const TextStyle(
-                          fontSize: 9.8,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF232323),
-                        ),
+                      _LabelColumn(
+                        labels: [receipt.dateLabel, receipt.orderLabel],
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        receipt.productSku,
-                        style: const TextStyle(
-                          fontSize: 8.5,
-                          color: Color(0xFF9E9E9E),
+                      const SizedBox(width: 36),
+                      _ValueColumn(
+                        values: [receipt.dateValue, receipt.orderValue],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  height: 12,
+                  color: const Color(0xFFF7F7F7),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Order Summary',
+                    style: TextStyle(
+                      fontSize: 8,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 18),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _ProductThumb(),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              receipt.productName,
+                              style: const TextStyle(
+                                fontSize: 9.8,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF232323),
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              receipt.productSku,
+                              style: const TextStyle(
+                                fontSize: 8.5,
+                                color: Color(0xFF9E9E9E),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const Spacer(),
-          const _DividerLine(padding: EdgeInsets.symmetric(horizontal: 14)),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                Text(
-                  receipt.totalLabel,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF343434),
-                  ),
-                ),
                 const Spacer(),
-                Text(
-                  receipt.totalAmount,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF7A7A7A),
+                const _DividerLine(padding: EdgeInsets.symmetric(horizontal: 14)),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      Text(
+                        receipt.totalLabel,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF343434),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        receipt.totalAmount,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF7A7A7A),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _PaidChip(label: receipt.statusLabel),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                _PaidChip(label: receipt.statusLabel),
+                const SizedBox(height: 40),
+                const _Barcode(),
+                const SizedBox(height: 12),
               ],
             ),
           ),
-          const SizedBox(height: 40),
-          const _Barcode(),
-          const SizedBox(height: 12),
         ],
       ),
     );

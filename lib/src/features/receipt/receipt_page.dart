@@ -1,3 +1,5 @@
+import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,54 +7,108 @@ import 'receipt_providers.dart';
 import '../../shared/widgets/receipt_printer.dart';
 import '../../shared/widgets/receipt_sheet.dart';
 
-class ReceiptPage extends ConsumerWidget {
+class ReceiptPage extends StatefulWidget {
   const ReceiptPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final receipt = ref.watch(receiptProvider);
+  State<ReceiptPage> createState() => _ReceiptPageState();
+}
 
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            const _Background(),
-            Positioned.fill(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 8),
-                    _TopBar(),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: Center(
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          clipBehavior: Clip.none,
-                          children: [
-                            const Positioned(
-                              top: 10,
-                              child: ReceiptPrinter(),
+class _ReceiptPageState extends State<ReceiptPage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final receipt = ref.watch(receiptProvider);
+        final animation = CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeOutCubic,
+        );
+        return Scaffold(
+          body: SafeArea(
+            child: Stack(
+              children: [
+                const _Background(),
+                Positioned.fill(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 8),
+                        const _TopBar(),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Center(
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              clipBehavior: Clip.none,
+                              children: [
+                                const Positioned(
+                                  top: 10,
+                                  child: ReceiptPrinter(),
+                                ),
+                                AnimatedBuilder(
+                                  animation: animation,
+                                  builder: (context, child) {
+                                    final slide =
+                                        lerpDouble(46, 0, animation.value)!;
+                                    final reveal = animation.value;
+                                    return Positioned(
+                                      top: 85 + slide,
+                                      child: ClipRect(
+                                        child: Align(
+                                          alignment: Alignment.topCenter,
+                                          heightFactor: reveal,
+                                          child: Transform.translate(
+                                            offset: Offset(
+                                              0,
+                                              (1 - reveal) * -8,
+                                            ),
+                                            child: Opacity(
+                                              opacity: reveal.clamp(0.0, 1.0),
+                                              child:
+                                                  ReceiptSheet(receipt: receipt),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              top: 85,
-                              child: ReceiptSheet(receipt: receipt),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 24),
+                        const _TimelineButton(),
+                        const SizedBox(height: 18),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    const _TimelineButton(),
-                    const SizedBox(height: 18),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -75,6 +131,8 @@ class _Background extends StatelessWidget {
 }
 
 class _TopBar extends StatelessWidget {
+  const _TopBar();
+
   @override
   Widget build(BuildContext context) {
     return Row(

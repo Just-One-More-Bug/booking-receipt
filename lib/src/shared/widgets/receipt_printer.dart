@@ -17,7 +17,7 @@ class ReceiptPrinter extends StatelessWidget {
             left: 20,
             right: 20,
             child: Container(
-              height: 56,
+              height: 48,
               decoration: BoxDecoration(
                 color: const Color(0xFFB9B9B9),
                 borderRadius: BorderRadius.circular(10),
@@ -40,6 +40,10 @@ class ReceiptPrinter extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(2),
+                border: Border.all(
+                  color: const Color(0xFFBEBEBE),
+                  width: 0.6,
+                ),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x1A000000),
